@@ -1,3 +1,4 @@
+import CartButton from "@/components/CartButton";
 import { images, offers } from "@/constants";
 import cn from "clsx";
 import { Fragment } from "react";
@@ -54,7 +55,7 @@ export default function Index() {
             <Image source={images.arrowDown} className="size-3" resizeMode="contain" />
           </TouchableOpacity>
         </View>
-        <Text>Cart</Text>
+        <CartButton />
       </View>
         )}
       />
