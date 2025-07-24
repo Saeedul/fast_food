@@ -60,5 +60,10 @@ export const createUser = async ({ email, password, name }: CreateUserParams) =>
 // A seperate function to sign in the user after account creation. This will allow us to keep the createUser function clean and focused on account creation.
 // We will be using this function in the createUser function to automatically sign in the user after account creation. And also we will be using it standalone in the app when the user just wants to sign in.
 export const signIn = async ({ email, password }: SignInParams) => {
-
+    // Within this second function, we sign the user in by creating the user session using their email and passoword.
+    try {
+        const session = await account.createEmailPasswordSession(email, password);
+    } catch (e) {
+        throw new Error(e as string);
+    }
 }
