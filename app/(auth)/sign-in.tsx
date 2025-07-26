@@ -1,24 +1,33 @@
 import CustomButton from '@/components/CustomButton'
 import CustomInput from '@/components/CustomInput'
+import { signIn } from "@/lib/appwrite"
 import { Link, router } from 'expo-router'
 import React, { useState } from 'react'
 import { Alert, Text, View } from 'react-native'
 
-const signIn = () => {
+const SignIn = () => {
   // to make the sign in functional, we use a useState snippet.
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({email: '', password: ''});
 
   const submit = async () => {
-    if(!form.email || !form.password) return Alert.alert('Error', 'Please enter valid email address and password');
+    // Destructuring the form object to get the email and password so that we dont have to repeat 'form'.
+
+    const { email, password } = form;
+
+    // after destructuring, we dont have to write it like this:
+    // if(!form.email || !form.password) return Alert.alert('Error', 'Please enter valid email address and password');
+    // instead we can write it like this:
+    if(!email || !password) return Alert.alert('Error', 'Please enter valid email address and password');
 
     setIsSubmitting(true);
 
     try {
       // Here you would typically call your sign-in API
       // Call appwrite Sign In function
-
-      Alert.alert('Success', 'User signed in successfully.');
+      // we dont have to call the name because we are not creating a new user, we are signing in an existing user.
+      await signIn({ email, password });
+      
       router.replace('/'); 
       // Redirect to home page after successful sign-in
     } catch (error: any) {
@@ -63,4 +72,4 @@ const signIn = () => {
   )
 }
 
-export default signIn
+export default SignIn

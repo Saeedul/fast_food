@@ -5,7 +5,7 @@ import { Link, router } from 'expo-router'
 import React, { useState } from 'react'
 import { Alert, Text, View } from 'react-native'
 
-const signUp = () => {
+const SignUp = () => {
   // to make the sign in functional, we use a useState snippet.
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -74,4 +74,4 @@ const signUp = () => {
   )
 }
 
-export default signUp
+export default SignUp

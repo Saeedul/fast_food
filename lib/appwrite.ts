@@ -1,5 +1,5 @@
 import { CreateUserParams, SignInParams } from "@/type";
-import { Account, Avatars, Client, Databases, ID } from "react-native-appwrite";
+import { Account, Avatars, Client, Databases, ID, Query } from "react-native-appwrite";
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
@@ -65,5 +65,30 @@ export const signIn = async ({ email, password }: SignInParams) => {
         const session = await account.createEmailPasswordSession(email, password);
     } catch (e) {
         throw new Error(e as string);
+    }
+}
+
+export const getCurrentUser = async () => {
+    // This function will be used to get the current user from the Appwrite account.
+    // It will return the current user account if the user is signed in, otherwise it will throw an error.
+    try {
+        const currentAccount = await account.get();
+        if (!currentAccount) throw Error;
+
+        // If there is an account, we fetch the current user from the database.
+        const currentUser = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal('accountId', currentAccount.$id)]
+        )
+
+        if(!currentUser) throw Error;
+
+        return currentUser.documents[0];
+        // .documents[0] is used to get the first document from the list of documents returned by the listDocuments method. This is because we are expecting only one user document to be returned for the current user.
+    } catch (e) {
+        console.log(e);
+        throw new Error(e as string);
+        
     }
 }
